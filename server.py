@@ -16,6 +16,9 @@ server_socket.listen(5)  # Allow up to 5 simultaneous connections
 
 print(f"Server is listening on {private_server_ip}:{server_port}")
 
+# List to store connected client sockets
+connected_clients = []
+
 # Function to handle each client
 def handle_client(client_socket):
     while True:
@@ -29,15 +32,17 @@ def handle_client(client_socket):
 
             print("Received from client:", data_from_client)
 
-            # Send a response back to the client
-            response_to_client = "Received your message: " + data_from_client
-            client_socket.send(response_to_client.encode())
+            # Forward the message to other connected clients
+            for client in connected_clients:
+                if client != client_socket:
+                    client.send(data_from_client.encode())
 
         except KeyboardInterrupt:
             print("Server terminated by user.")
             break
 
-    # Close the client socket when done
+    # Remove the client socket from the list
+    connected_clients.remove(client_socket)
     client_socket.close()
 
 # Main server loop
@@ -46,6 +51,9 @@ while True:
         # Accept incoming connections
         client_socket, client_address = server_socket.accept()
         print(f"Connection established with {client_address}")
+
+        # Add the client socket to the list
+        connected_clients.append(client_socket)
 
         # Create a new thread to handle the client
         client_handler = threading.Thread(target=handle_client, args=(client_socket,))

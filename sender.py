@@ -1,19 +1,19 @@
 import socket
 
-# Define the server's public IP and port
+
 public_server_ip = '54.198.62.240'
 server_port = 2500
 
-# Create a socket object
+
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Connect to the server
+
 client_socket.connect((public_server_ip, server_port))
 
 while True:
     try:
-        # Send a message to the server
-        message_to_server = input("Enter a message for the server: ")
+
+        message_to_server = '1'
         client_socket.send(message_to_server.encode())
 
         # Receive data from the server

@@ -30,7 +30,6 @@ def handle_client(client_socket):
                 print("Client closed the connection.")
                 break
 
-            print("Received from client:", data_from_client)
 
             # Forward the message to other connected clients
             for client in connected_clients:

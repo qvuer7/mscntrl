@@ -1,5 +1,5 @@
 import socket
-
+import pyautogui as pg
 
 public_server_ip = '54.198.62.240'
 server_port = 2500
@@ -13,7 +13,8 @@ client_socket.connect((public_server_ip, server_port))
 while True:
     try:
 
-        message_to_server = '1'
+        x, y = pg.position()
+        message_to_server = f'{x} {y}'
         client_socket.send(message_to_server.encode())
 
         # Receive data from the server
